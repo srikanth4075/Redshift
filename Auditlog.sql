@@ -8,8 +8,14 @@ CREATE EXTERNAL TABLE redshiftuseractivitylog (
       ESCAPED BY '\\'
       LINES TERMINATED BY '\n'
     LOCATION 's3://sfly-aws-dwh-prod-redshift-audit-logging/prod-audit-logs/AWSLogs/157816743405/redshift/us-east-1';
+       
+-- 157816743405 Account ID for Prod
+-- prod-audit-logs Bucket Prefix used when enabling the Audit logging
+-- sfly-aws-dwh-prod-redshift-audit-logging Bucket Name to log the data.
 
 -- Create views as required.
+-- replace the cluster_name as redshift-stack-enc-redshiftcluster-10r8oprxwf5w8
+
 CREATE or REPLACE VIEW redshiftuseractivitylog_view AS
 SELECT date_parse(regexp_extract(logrecord, '\d+-\d+-\d+T\d+:\d+:\d+Z UTC'), '%Y-%m-%dT%TZ UTC') AS recordtimestamp,
           regexp_extract(logrecord, '\[ db=(.*?) user=(.*?) pid=(\d+) userid=(\d+) xid=(\d+) \]', 1) AS db,
@@ -19,7 +25,7 @@ SELECT date_parse(regexp_extract(logrecord, '\d+-\d+-\d+T\d+:\d+:\d+Z UTC'), '%Y
           regexp_extract(logrecord, '\[ db=(.*?) user=(.*?) pid=(\d+) userid=(\d+) xid=(\d+) \]', 5) AS xid,
           regexp_extract(logrecord, 'LOG: (.*)', 1) AS query
 FROM redshiftuseractivitylog
-WHERE regexp_like("$path", '[0-9]+_redshift_us-east-1_redshift-stack-enc-redshiftcluster-10r8oprxwf5w8_useractivitylog_.*');
+WHERE regexp_like("$path", '[0-9]+_redshift_us-east-1_<<cluster_name>>_useractivitylog_.*');
 
 CREATE or REPLACE VIEW redshiftuserlog_view AS
 select regexp_extract(logrecord, '(\d+)\|(.*?)\|(.*)', 1) AS userid,
@@ -34,7 +40,7 @@ regexp_extract(logrecord, '(\d+)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(\d+)\|(\d+)\|(.*?
 regexp_extract(logrecord, '(\d+)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(\d+)\|(\d+)\|(.*?)\|(\d+)\|(\d+)\|(.*)', 10) AS xid,
 regexp_extract(logrecord, '(\d+)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(\d+)\|(\d+)\|(.*?)\|(\d+)\|(\d+)\|(.*)', 11) AS recordtime
 FROM redshiftuserlog_viewactivitylog
-WHERE regexp_like("$path", '[0-9]+_redshift_us-east-1_redshift-stack-enc-redshiftcluster-10r8oprxwf5w8_userlog_.*'); 
+WHERE regexp_like("$path", '[0-9]+_redshift_us-east-1_<<cluster_name>>_userlog_.*'); 
 
 CREATE or REPLACE VIEW redshiftconnectionlog_view AS
 select regexp_extract(logrecord, '(.*?)\|(.*)', 1) AS event,
@@ -54,4 +60,4 @@ regexp_extract(logrecord, '(.*?)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(.*?
 regexp_extract(logrecord, '(.*?)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(.*?)\|(.*)', 15) AS iamauthguid,
 regexp_extract(logrecord, '(.*?)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(\d+)\|(.*?)\|(.*?)\|(.*?)\|(.*)', 16) AS application_name
 FROM redshiftuseractivitylog
-WHERE regexp_like("$path", '[0-9]+_redshift_us-east-1_redshift-stack-enc-redshiftcluster-10r8oprxwf5w8_connectionlog_.*');
+WHERE regexp_like("$path", '[0-9]+_redshift_us-east-1_<<cluster_name>>_connectionlog_.*');
