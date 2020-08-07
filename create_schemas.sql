@@ -8,3 +8,39 @@ CREATE EXTERNAL SCHEMA IF NOT EXISTS dwh_mfg_oa_prod FROM  DATA CATALOG DATABASE
 CREATE EXTERNAL SCHEMA IF NOT EXISTS dw_mktg_data FROM  DATA CATALOG DATABASE 'mktg_glue_outbound' REGION 'us-east-1' IAM_ROLE 'arn:aws:iam::157816743405:role/sfly-aws-dwh-prod-svc-redshift,arn:aws:iam::813833348497:role/sfly-aws-marketing-prod-svc-mktg-dwh-redshift-spectrum';
 CREATE EXTERNAL SCHEMA IF NOT EXISTS pipeline FROM  DATA CATALOG DATABASE 'pipeline' REGION 'us-east-1' IAM_ROLE 'arn:aws:iam::157816743405:role/sfly-aws-dwh-prod-svc-redshift';
 CREATE EXTERNAL SCHEMA IF NOT EXISTS dw_bo FROM  DATA CATALOG DATABASE 'dw_bo' REGION 'us-east-1' IAM_ROLE 'arn:aws:iam::157816743405:role/sfly-aws-dwh-prod-svc-redshift';
+
+
+ grant all on schema dataquality to dataquality;
+ grant usage on schema dataquality to group l1_developer_group;
+ grant all on schema devscratchdb to group l1_developer_group ,airflow,dataquality;
+ grant usage on schema devscratchdb to group l1_user_group,group l1_pii_user_group;
+ grant usage on schema dw to group l1_user_group ,group l1_developer_group,group l1_pii_user_group,group l1_cia_app_a_group;
+ grant all on schema dw_bi to group l1_bi_user_a_group,jthompson;
+ grant usage on schema dw_bi to group l1_bi_user_wr_group,group l1_bi_user_r_group,group l1_user_group,group l1_pii_user_group;
+ grant usage on schema dw_bo to group l1_user_spectrum_group,group l1_developer_group,dataquality,airflow,bi_admin;
+ grant all on schema dw_cia_app to group l1_cia_app_a_group;
+ grant usage on schema dw_cia_app to group l1_cia_app_wr_group,group l1_cia_app_r_group,group l1_user_group,group l1_pii_user_group;
+ grant all on schema dw_cia_udfs to group l1_user_udf_group; 
+ grant usage on schema dw_core to group l1_developer_group,group svc_group,group l1_user_group,group l1_pii_user_group;
+ grant all on schema dw_core to airflow;
+ grant usage on schema dw_core_tmp to group l1_developer_group;
+ grant usage on schema dw_mktg_data to group l1_user_spectrum_group;
+ grant usage on schema dw_pii to group l1_developer_group,group l1_pii_user_group,group l1_user_group,airflow;
+ grant all on schema dw_procs to airflow;
+ grant usage on schema dw_procs to group l1_developer_group;
+ grant usage on schema dw_rev to airflow,group l1_developer_group,group l1_user_rev_group;
+ grant usage on schema dw_stage to group l1_developer_group,group l1_user_group;
+ grant all on schema dw_stage to airflow;
+ grant usage on schema dwh_mfg_oa_prod to group l1_developer_group,group l1_user_spectrum_group;
+ grant usage on schema pipeline to group l1_user_spectrum_group,group l1_developer_group,dataquality,airflow,bi_admin;
+ grant usage on schema scratch to svc_infa_edc,group l1_bi_user_a_group,group l1_bi_user_wr_group,group l1_bi_user_r_group,group l1_pii_user_group;
+ grant all on schema scratch to group l1_user_group,group svc_group;
+ grant usage on schema scratch_pii to airflow,group l1_bi_user_a_group,group l1_bi_user_wr_group,group l1_bi_user_r_group,group l1_user_group,group l1_developer_group;
+ grant all on schema scratch_pii to group l1_pii_user_group;
+ grant usage on schema scratch_spectrum to group l1_user_group,group l1_svc_group,group svc_group,group etl_group,group l1_bi_user_a_group;
+ grant usage on schema scratch_spectrum to group l1_bi_user_group,group l1_cia_app_a_group,group l1_cia_app_wr_group,group l1_cia_app_r_group;
+ grant usage on schema scratch_spectrum to group l1_bi_user_wr_group,group l1_bi_user_r_group,group l1_user_spectrum_group,group l1_pii_user_group,group l1_developer_group;
+ grant usage on schema sflymonitor to group l1_user_group,group l1_pii_user_group,group l1_developer_group,svc_ops360;
+ 
+ 
+        
