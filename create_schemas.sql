@@ -64,5 +64,5 @@ CREATE EXTERNAL SCHEMA IF NOT EXISTS dw_bo FROM  DATA CATALOG DATABASE 'dw_bo' R
  ALTER DEFAULT PRIVILEGES IN SCHEMA sflymonitor GRANT SELECT ON TABLES to group l1_developer_group,group l1_user_group,group l1_pii_user_group;
 
  
- 
+ select ddl from sflymonitor.v_generate_tbl_ddl where (schemaname not like 'pg_%') AND schemaname not in ('information_schema','public') order by schemaname,tablename,seq;
         
