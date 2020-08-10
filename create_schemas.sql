@@ -42,5 +42,27 @@ CREATE EXTERNAL SCHEMA IF NOT EXISTS dw_bo FROM  DATA CATALOG DATABASE 'dw_bo' R
  grant usage on schema scratch_spectrum to group l1_bi_user_wr_group,group l1_bi_user_r_group,group l1_user_spectrum_group,group l1_pii_user_group,group l1_developer_group;
  grant usage on schema sflymonitor to group l1_user_group,group l1_pii_user_group,group l1_developer_group,svc_ops360;
  
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_core GRANT SELECT ON TABLES  to group l1_developer_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_core GRANT all ON TABLES  to airflow;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_stage GRANT SELECT ON TABLES  to group l1_developer_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_stage GRANT all ON TABLES  to airflow;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw GRANT SELECT ON TABLES  to group l1_developer_group,group l1_user_group,group l1_pii_user_group,group svc_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_PII GRANT SELECT ON TABLES  to group l1_developer_group,group l1_pii_user_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dataquality GRANT SELECT ON TABLES  to group l1_developer_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dataquality GRANT SELECT ON TABLES  to group l1_developer_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA devscratchdb GRANT all ON TABLES  to group l1_user_group;
+ 
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_cia_app GRANT SELECT ON TABLES to group l1_cia_app_r_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_cia_app GRANT ALL ON TABLES to group l1_cia_app_a_group , group l1_cia_app_wr_group;
+  
+ set session authorization cia_app_admin;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_cia_app GRANT SELECT ON TABLES to group l1_cia_app_r_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_cia_app GRANT ALL ON TABLES to group l1_cia_app_wr_group;
+ 
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_core_tmp GRANT SELECT ON TABLES to group l1_developer_group;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA dw_rev GRANT SELECT ON TABLES to group l1_developer_group,group l1_user_rev_group,airflow;
+ ALTER DEFAULT PRIVILEGES IN SCHEMA sflymonitor GRANT SELECT ON TABLES to group l1_developer_group,group l1_user_group,group l1_pii_user_group;
+
+ 
  
         
