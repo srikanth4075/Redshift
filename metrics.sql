@@ -24,10 +24,6 @@ AND   test_run ilike '%RA34xlNormalDay20200901%'
 AND   label iLIKE 'auditlog%'
 AND   Sql_date = '2020-09-01';
 
-
-
-
-
 select *
 from q42020_replay.stl_query_actualresults_v act
 join q42020_replay.stl_query_testresults_0901_v tst
@@ -54,7 +50,7 @@ WHERE CAST(a.starttime AS DATE) = '2020-09-01'
 AND   a."DATABASE" = 'dwhprod'
 AND   a.userid <> 1;
 
--- Difference in counts expected we removed lot of fetch sqls
+-- Difference in counts expected as we removed lot of fetch sqls
 select count(distinct test_pid),count(*)  from q42020_replay.stl_query_testresults_0901_v ;
 5733	12734
 select count(distinct pid),count(*) from q42020_replay.stl_query_actualresults_0901_v;
@@ -96,9 +92,6 @@ select 'RA3.4xl.6Nodes.NormalDay.2020-09-01' as SystemType,
  ;
 
 
-
-
-select * from 
 
 drop view if exists q42020_replay.Group_by_pid_actualresults_0901_v;
 create or replace view q42020_replay.Group_by_pid_actualresults_0901_v as 
